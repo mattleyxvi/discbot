@@ -1,23 +1,21 @@
 import os
-import json
 import disnake
 from disnake.ext import commands
 import datetime
 from datetime import date
 from typing import Optional
 from dotenv import load_dotenv
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env') # Путь до файла с переменными окружения
-if os.path.exists(dotenv_path):
-    load_dotenv("C:\Users\matve\AppData\Local\Programs\Python\Python311\.env.txt")
-
+path = os.path.join(os.path.dirname(__file__),'env.txt')
+load_dotenv(path)
 
 settings = {
-    "token" : BOT_TOKEN,
-    "badwords" : BOT_BADLIST,
-    "prefix": BOT_PREFIX
+    "token" : os.environ.get('bot_token'),
+    "badwords" : os.environ.get('bot_badlist') ,
+    "prefix": os.environ.get('bot_prefix')
 }
-badlist = settings[badwords].split()
-bot = commands.Bot(command_prefix=settings[prefix], help_command=None, intents=disnake.Intents.all(), test_guilds=[1100747106135855176])
+badlist = settings["badwords"].split()
+
+bot = commands.Bot(command_prefix=settings["prefix"], help_command=None, intents=disnake.Intents.all(), test_guilds=[1100747106135855176])
 
 @bot.event
 async def on_ready():
@@ -187,4 +185,4 @@ async def menu(ctx):
         await ctx.send('Время ожидания истекло!')
 
 
-bot.run(settings[token])
+bot.run(settings["token"])
